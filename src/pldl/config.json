@@ -1,0 +1,18 @@
+{
+    "settings": {
+        "update_on_start": true,
+        "music_dir": "/media/timofey/New Volume/Music"
+    },
+    "playlists": [
+        {
+            "name": "Synthwave",
+            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdjJWF6mF9nI_buWLF00I7Jh",
+            "last_updated": "24.12.2025 18:15"
+        },
+        {
+            "name": "!!агрессивный фонк!!",
+            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdjGFIdo32oizQayhgLqKuV3",
+            "last_updated": ""
+        }
+    ]
+}
