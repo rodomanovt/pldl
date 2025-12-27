@@ -22,7 +22,7 @@ class Config:
         if not self._initialized:
             self._initialized = True
             config_dir = os.path.dirname(os.path.abspath(__file__))
-            self._config_path = os.path.join(config_dir, "config.json")
+            self._config_path = os.path.join(config_dir, "..", "config.json")
 
             with open(self._config_path, 'r', encoding='utf-8') as f:
                 self._data = json.load(f)

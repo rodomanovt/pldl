@@ -4,7 +4,7 @@ from yt_dlp import YoutubeDL # type: ignore
 class Downloader:
 
     @staticmethod
-    def download_audio(url: str, work_dir: str):
+    def download_audio(url: str, work_dir: str): # TODO: add formatter and smart file naming
         if not os.path.exists(work_dir):
             print(f"path {work_dir} does not exist")
             return

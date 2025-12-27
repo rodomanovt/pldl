@@ -1,7 +1,8 @@
 from pldl.model.Playlist import *
 from pldl.model.RemoteSong import *
-from pldl.Config import *
-from yt_dlp import YoutubeDL # type: ignore
+from pldl.core.Config import *
+from yt_dlp import YoutubeDL
+from mutagen.id3 import ID3
 import os
 
 class MusicRepository:
@@ -36,13 +37,39 @@ class MusicRepository:
             return []
 
 
-
     @staticmethod
-    def get_local_song_names_from_playlist(playlist: Playlist) -> list[str]:
+    def get_local_song_names_from_playlist(playlist: Playlist, paths=False) -> list[str]:
         work_dir = Config.get_instance().get_music_dir_setting() + "/" + playlist.name
         if os.path.exists(work_dir):
-            result = os.listdir(work_dir)
-            return result
+            results = os.listdir(work_dir)
+            if paths:
+                return [work_dir + "/" + res for res in results]
+            else:
+                return results
 
         else:
             print(f"Path {work_dir} does not exist")
+
+
+    @staticmethod
+    def is_downloaded(playlist: Playlist, url: str) -> bool:
+        """checks url in file metadata to see if it was downloaded"""
+        url = url.replace("www.", "").replace("music.", "")
+
+        paths = MusicRepository.get_local_song_names_from_playlist(playlist, paths=True)
+        
+        for path in paths:
+            if os.path.isfile(path):
+                tags = ID3(path)
+                frames = tags.getall("TXXX")
+                
+                for frame in frames:
+                    if frame.desc == "purl" and frame.text:
+                        current_url = str(frame.text[0]).strip().replace("www.", "").replace("music.", "")
+                        if current_url == url:
+                            return True
+
+            else:
+                print(f"File {path} does not exist")
+            
+        return False
