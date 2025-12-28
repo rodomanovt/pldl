@@ -77,7 +77,7 @@ class Config:
             self._data["playlists"].append({"name": name, "url": url, "last_updated": ""})
             self.save()
         else:
-            print(f'Playlist "{name}" already exists')
+            raise FileExistsError(f'Playlist "{name}" already exists')
 
 
     def remove_playlist_from_db(self, name: str) -> None:
@@ -87,7 +87,7 @@ class Config:
                 self.save()
                 return
             
-        print(f'Playlist "{name}" was not found')
+        raise FileNotFoundError(f'Playlist "{name}" was not found')
 
 
     def update_playlist_time_setting(self, name: str) -> None:
@@ -101,4 +101,4 @@ class Config:
                 self.save()
                 return
             
-        print(f'Playlist "{name}" was not found')
+        raise FileNotFoundError(f'Playlist "{name}" was not found')

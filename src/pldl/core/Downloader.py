@@ -12,6 +12,7 @@ class Downloader:
         ydl_opts = {
             'outtmpl': os.path.join(work_dir, '%(title)s.%(ext)s'),
             'format': 'bestaudio/best',
+            'no_warnings': True,
             'postprocessors': [
                 {
                     'key': 'FFmpegExtractAudio',

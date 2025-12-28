@@ -3,6 +3,17 @@ from pldl.core.services import *
 from pldl import __version__
 import typer
 from typing import Optional
+from urllib.parse import urlparse
+
+
+def validate_url(url: str) -> str:
+    """Check if url looks like yt music"""
+    if not url:
+        raise typer.BadParameter("URL cannot be empty")
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https") or "youtube.com" not in parsed.netloc:
+        raise typer.BadParameter("URL must be a YouTube Music playlist")
+    return url
 
 
 app = typer.Typer(help="CLI tool to download youtube music playlists")
@@ -39,9 +50,14 @@ def add(
     playlist_url: str = typer.Argument(..., help="Youtube music playlist url")
 ) -> None:
     """Add playlist to auto-update list"""
-    typer.echo(playlist_name)
-    typer.echo(playlist_url)
-    pass
+    playlist_url = validate_url(playlist_url)
+
+    config = Config.get_instance()
+    service = AddPlaylistService(config)
+
+    typer.echo("Fetching playlist data...")
+    response: str = service.add_playlist(playlist_name, playlist_url)
+    typer.echo(response)
 
 
 @app.command()
@@ -49,8 +65,12 @@ def remove(
     playlist_name: str = typer.Argument(..., help="Local playlist name")
 ) -> None:
     """Remove playlist from auto-update list"""
-    typer.echo(playlist_name)
-    pass
+    config = Config.get_instance()
+    service = RemovePlaylistService(config)
+
+    response: str = service.remove_playlist(playlist_name)
+    typer.echo(response)
+
 
 
 @app.command()

@@ -8,33 +8,31 @@ import os
 class MusicRepository:
 
     @staticmethod
-    def get_remote_songs_from_playlist(playlist) -> list['RemoteSong']:
+    def get_remote_songs_from_playlist(playlist: Playlist) -> list['RemoteSong']: # raises Exeption
         ydl_opts = {
-            'extract_flat': True,   # Получаем только базовую информацию (ID, title, url)
-            'quiet': True,          # Без лишнего вывода
-            'skip_download': True,  # Ничего не скачиваем
-            'ignoreerrors': True,   # Пропускать недоступные видео
+            'extract_flat': True,
+            'quiet': True,
+            'no_warnings': True,
+            'skip_download': True,
+            'ignoreerrors': True
         }
 
-        try:
-            with YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(playlist.url.strip(), download=False)
-            
-            # info — это dict с ключом 'entries', содержащим список видео
-            entries = info.get('entries', [])
-            
-            remote_songs = []
-            for entry in entries:
-                if entry:  # Некоторые записи могут быть None, если видео недоступно
-                    title = entry.get('title', 'Unknown Title')
-                    url = entry.get('url') or f"https://www.youtube.com/watch?v={entry.get('id')}"
-                    remote_songs.append(RemoteSong(title=title, url=url))
-            
-            return remote_songs
 
-        except Exception as e:
-            print(f"Failed to fetch playlist: {e}")
-            return []
+        with YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(playlist.url.strip(), download=False)
+        
+        # info — это dict с ключом 'entries', содержащим список видео
+        entries = info.get('entries', [])
+        
+        remote_songs = []
+        for entry in entries:
+            if entry:  # Некоторые записи могут быть None, если видео недоступно
+                title = entry.get('title', 'Unknown Title')
+                url = entry.get('url') or f"https://www.youtube.com/watch?v={entry.get('id')}"
+                remote_songs.append(RemoteSong(title=title, url=url))
+        
+        return remote_songs
+
 
 
     @staticmethod
