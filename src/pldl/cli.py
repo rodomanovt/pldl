@@ -84,9 +84,11 @@ def pull(
 ) -> None:
     """Auto download all new tracks. 
     If playlist_name specified, download new tracks only from this playlist"""
-    typer.echo(playlist_name)
-    typer.echo(smart_naming)
-    pass
+    config = Config.get_instance()
+    service = PullService(config)
+
+    service.pull(playlist_name, smart_naming)
+
 
 
 @app.command()

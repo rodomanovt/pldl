@@ -3,7 +3,9 @@ from pldl.model.RemoteSong import *
 from pldl.core.Config import *
 from yt_dlp import YoutubeDL
 from mutagen.id3 import ID3
+from pathlib import  Path
 import os
+
 
 class MusicRepository:
 
@@ -58,8 +60,16 @@ class MusicRepository:
         
         for path in paths:
             if os.path.isfile(path):
-                tags = ID3(path)
-                frames = tags.getall("TXXX")
+                # Skip non mp3 files
+                if Path(path).suffix.lower() != ".mp3":
+                    continue
+
+                try:
+                    tags = ID3(path)
+                    frames = tags.getall("TXXX")
+                except Exception as e:
+                    print(e)
+
                 
                 for frame in frames:
                     if frame.desc == "purl" and frame.text:
@@ -71,3 +81,16 @@ class MusicRepository:
                 print(f"File {path} does not exist")
             
         return False
+    
+
+    @staticmethod
+    def get_songs_to_download(playlist: Playlist) -> list[RemoteSong]: # raises exeption
+        all_remote_songs = MusicRepository.get_remote_songs_from_playlist(playlist)
+
+        result = []
+        for song in all_remote_songs:
+            if not MusicRepository.is_downloaded(playlist, song.url):
+                result.append(song)
+
+        return result
+
