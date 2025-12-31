@@ -70,6 +70,14 @@ class Config:
         for el in self._data["playlists"]:
             playlists.append(Playlist(el["name"], el["url"], el["last_updated"]))
         return playlists
+    
+
+    def get_playlist(self, name: str) -> Playlist:
+        for el in self._data["playlists"]:
+            if el["name"] == name:
+                return Playlist(el["name"], el["url"], el["last_updated"])
+            
+        raise FileNotFoundError(f'Playlist "{name}" was not found')
 
 
     def add_playlist_to_db(self, name: str, url: str) -> None:

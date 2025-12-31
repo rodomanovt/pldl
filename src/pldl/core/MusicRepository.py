@@ -29,9 +29,10 @@ class MusicRepository:
         remote_songs = []
         for entry in entries:
             if entry:  # Некоторые записи могут быть None, если видео недоступно
-                title = entry.get('title', 'Unknown Title')
+                channel = entry.get('channel', "Unknown artist")
+                name = entry.get('title', 'Unknown Title')
                 url = entry.get('url') or f"https://www.youtube.com/watch?v={entry.get('id')}"
-                remote_songs.append(RemoteSong(title=title, url=url))
+                remote_songs.append(RemoteSong(channel, name, url=url))
         
         return remote_songs
 
