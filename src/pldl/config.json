@@ -1,13 +1,13 @@
 {
     "settings": {
         "update_on_start": true,
-        "music_dir": "/media/timofey/New Volume/Music"
+        "music_dir": "D:/Music"
     },
     "playlists": [
         {
             "name": "Synthwave",
             "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdjJWF6mF9nI_buWLF00I7Jh",
-            "last_updated": "31.12.2025 12:06"
+            "last_updated": "31.12.2025 13:24"
         },
         {
             "name": "Музяка",

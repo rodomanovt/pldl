@@ -1,7 +1,7 @@
 from pldl.core.Config import Config
 from pldl.core.services import *
 from pldl import __version__
-import typer
+import typer # type: ignore
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -111,8 +111,11 @@ def cd(
     new_work_dir: str = typer.Argument(..., help = "New work directory")
 ) -> None:
     """Change where your playlists are going to be saved"""
-    typer.echo(new_work_dir)
-    pass
+    config = Config.get_instance()
+    service = CdService(config)
+
+    response = service.change_dir(new_work_dir)
+    typer.echo(response)
 
 
 if __name__ == "__main__":
