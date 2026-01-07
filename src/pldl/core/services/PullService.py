@@ -16,6 +16,7 @@ class PullService:
                 playlists.append(self.config.get_playlist(playlist_name))
             except FileNotFoundError:
                 print(f'Playlist "{playlist_name}" was not found')
+                quit()
 
         else:
             playlists = self.config.get_playlists_db()
@@ -45,7 +46,6 @@ class PullService:
                         print(f"[{cnt}/{total}] Downloaded {song.artist} - {song.title}")
                         cnt += 1;
                     except Exception as e:
-                        print(e)
                         continue
                         # TODO: Save all song urls that got error while downloading. 
                         # TODO: Exclude them for next pulls or
