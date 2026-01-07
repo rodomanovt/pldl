@@ -20,6 +20,8 @@ class PullService:
         else:
             playlists = self.config.get_playlists_db()
 
+        if smart_naming: print("Using smart naming")
+
         for playlist in playlists:
             playlist_dir = work_dir + "/" + playlist.name
             if os.path.exists(work_dir):
@@ -27,6 +29,7 @@ class PullService:
                     os.mkdir(playlist_dir)
 
                 try:
+                    print(f"Fetching new songs from playlist {playlist.name} ...")
                     songs = MusicRepository.get_songs_to_download(playlist)
                 except Exception as e:
                     print(e)
@@ -34,16 +37,14 @@ class PullService:
 
                 total = len(songs)
                 print(f"Found {total} new songs in playlist {playlist.name}")
-                if smart_naming: print("Using smart naming")
                 cnt = 1
 
                 for song in songs:
                     try:
                         Downloader.download_audio(song, playlist_dir, smart_naming=smart_naming)
-                        print(f"[{cnt}/{len(songs)}] Downloaded {song.artist} - {song.title}")
+                        print(f"[{cnt}/{total}] Downloaded {song.artist} - {song.title}")
                         cnt += 1;
                     except Exception as e:
-                        total -= 1
                         print(e)
                         continue
                         # TODO: Save all song urls that got error while downloading. 

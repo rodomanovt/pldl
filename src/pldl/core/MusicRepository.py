@@ -10,7 +10,7 @@ import os
 class MusicRepository:
 
     @staticmethod
-    def get_remote_songs_from_playlist(playlist: Playlist) -> list['RemoteSong']: # raises Exeption
+    def get_remote_songs_from_playlist(playlist: Playlist) -> list['RemoteSong']: # raises Exception
         ydl_opts = {
             'extract_flat': True,
             'quiet': True,
@@ -37,33 +37,33 @@ class MusicRepository:
         return remote_songs
 
 
-
     @staticmethod
     def get_local_song_names_from_playlist(playlist: Playlist, paths=False) -> list[str]:
-        work_dir = Config.get_instance().get_music_dir_setting() + "/" + playlist.name
-        if os.path.exists(work_dir):
-            results = os.listdir(work_dir)
-            if paths:
-                return [work_dir + "/" + res for res in results]
-            else:
-                return results
+        """Get all mp3 file names or paths in playlist"""
+        config = Config.get_instance()
+        work_dir = os.path.join(config.get_music_dir_setting(), playlist.name)
+        
+        if not os.path.exists(work_dir):
+            return []
 
+        mp3_files = [
+            f for f in os.listdir(work_dir)
+            if Path(f).suffix.lower() == ".mp3"
+        ]
+        
+        if paths:
+            return [os.path.join(work_dir, f) for f in mp3_files]
         else:
-            print(f"Path {work_dir} does not exist")
+            return mp3_files
 
 
     @staticmethod
-    def is_downloaded(playlist: Playlist, url: str) -> bool:
+    def is_downloaded(playlist: Playlist, url: str, paths: list[str]) -> bool:
         """checks url in file metadata to see if it was downloaded"""
         url = url.replace("www.", "").replace("music.", "")
 
-        paths = MusicRepository.get_local_song_names_from_playlist(playlist, paths=True)
-        
         for path in paths:
             if os.path.isfile(path):
-                # Skip non mp3 files
-                if Path(path).suffix.lower() != ".mp3":
-                    continue
 
                 try:
                     tags = ID3(path)
@@ -85,13 +85,13 @@ class MusicRepository:
     
 
     @staticmethod
-    def get_songs_to_download(playlist: Playlist) -> list[RemoteSong]: # raises exeption
+    def get_songs_to_download(playlist: Playlist) -> list[RemoteSong]: # raises Exeption
         all_remote_songs = MusicRepository.get_remote_songs_from_playlist(playlist)
+        all_local_songs = MusicRepository.get_local_song_names_from_playlist(playlist, paths=True)
 
         result = []
         for song in all_remote_songs:
-            if not MusicRepository.is_downloaded(playlist, song.url):
+            if not MusicRepository.is_downloaded(playlist, song.url, all_local_songs):
                 result.append(song)
 
         return result
-

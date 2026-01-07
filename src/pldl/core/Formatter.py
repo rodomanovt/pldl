@@ -39,7 +39,6 @@ def get_smart_song_name(channel: str, name: str) -> Tuple[str, str]:
 
     if artist and channel:
         title = title.replace(artist, "").replace(channel, "")
-        print(title)
         title = title.replace('-', " ")
         # index = title.rfind("  ")
         # if index != -1:

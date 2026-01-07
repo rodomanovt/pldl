@@ -1,9 +1,10 @@
 from pldl.core.Config import Config
 from pldl.core.services import *
 from pldl import __version__
-import typer # type: ignore
+import typer
 from typing import Optional
 from urllib.parse import urlparse
+import os
 
 
 def validate_url(url: str) -> str:
@@ -16,7 +17,8 @@ def validate_url(url: str) -> str:
     return url
 
 
-app = typer.Typer(help="CLI tool to download youtube music playlists")
+app = typer.Typer(help="CLI tool to download youtube music playlists",
+                  no_args_is_help=True)
 
 
 @app.callback(invoke_without_command=True)
@@ -78,7 +80,7 @@ def pull(
     playlist_name: Optional[str] = typer.Argument(None, help="Local playlist name"),
     smart_naming: bool = typer.Option(False,
         "-s", "--smart-naming",
-        help="Enable smart file naming (e.g., 'Artist - Title')",
+        help="Use smart 'Artist - Title.mp3' naming",
         is_flag=True,
     )
 ) -> None:
@@ -93,24 +95,25 @@ def pull(
 
 @app.command()
 def clone(
-    playlist_url: str = typer.Argument(..., help="Youtube music playlist url"),
-    smart_naming: bool = typer.Option(False,
+    url: str = typer.Argument(..., help="YouTube Music track or playlist URL"),
+    smart_naming: bool = typer.Option(
+        False,
         "-s", "--smart-naming",
-        help="Enable smart file naming (e.g., 'Artist - Title')",
-        is_flag=True,
-    )
+        help="Use smart 'Artist - Title.mp3' naming"
+    ),
 ) -> None:
-    """Downloads all tracks from youtube playlist to your working directory"""
-    typer.echo(playlist_url)
-    typer.echo(smart_naming)
-    pass
+    """Download a track or playlist into the current directory"""
+    current_dir = os.getcwd()
+    service = CloneService()
+    service.clone(url.strip(), current_dir, smart_naming)
+
 
 
 @app.command()
 def cd(
-    new_work_dir: str = typer.Argument(..., help = "New work directory")
+    new_work_dir: str = typer.Argument(..., help = "New library directory")
 ) -> None:
-    """Change where your playlists are going to be saved"""
+    """Change music library directory, where playlists are downloaded"""
     config = Config.get_instance()
     service = CdService(config)
 

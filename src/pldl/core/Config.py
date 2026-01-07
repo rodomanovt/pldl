@@ -103,7 +103,8 @@ class Config:
             playlist = self._data["playlists"][i]
             if playlist["name"] == name:
                 timestamp = time.localtime()
-                time_string = f"{timestamp.tm_mday}.{timestamp.tm_mon}.{timestamp.tm_year} {timestamp.tm_hour}:{str(timestamp.tm_min).zfill(2)}"
+                time_string = f"{str(timestamp.tm_mday).zfill(2)}.{str(timestamp.tm_mon).zfill(2)}.{timestamp.tm_year} "\
+                f"{str(timestamp.tm_hour).zfill(2)}:{str(timestamp.tm_min).zfill(2)}"
 
                 playlist["last_updated"] = time_string
                 self.save()

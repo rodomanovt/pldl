@@ -7,9 +7,9 @@ from pldl.core.Formatter import *
 class Downloader:
 
     @staticmethod # throws error
-    def download_audio(song: RemoteSong, work_dir: str, smart_naming = False): # TODO: add formatter and smart file naming
+    def download_audio(song: RemoteSong, work_dir: str, smart_naming = False):
         if not os.path.exists(work_dir):
-            print(f"path {work_dir} does not exist")
+            print(f"Path {work_dir} does not exist")
             return
         
         if smart_naming:
@@ -19,7 +19,7 @@ class Downloader:
             filename = f"{artist} - {title}.%(ext)s"
             outtmpl = os.path.join(work_dir, filename)
         else:
-            outtmpl = os.path.join(work_dir, '%(title)s.%(ext)s'),
+            outtmpl = os.path.join(work_dir, '%(title)s.%(ext)s')
         
         ydl_opts = {
             'logger': QuietLogger(),
@@ -33,13 +33,13 @@ class Downloader:
                     'preferredquality': '192',
                 },
                 {
-                    'key': 'EmbedThumbnail',  # ← встраивает обложку в MP3
+                    'key': 'EmbedThumbnail', # Embed thumbnail in mp3
                 },
                 {
-                    'key': 'FFmpegMetadata',   # ← опционально: сохраняет другие метаданные
+                    'key': 'FFmpegMetadata',
                 }
             ],
-            'writethumbnail': True,       # ← обязательно: скачивает thumbnail
+            'writethumbnail': True,
             'quiet': False,
             'ignoreerrors': False,
         }
