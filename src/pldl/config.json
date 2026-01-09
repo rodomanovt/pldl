@@ -1,48 +1,9 @@
 {
     "settings": {
         "update_on_start": true,
-        "music_dir": "/media/timofey/New Volume/Music"
+        "music_dir": ""
     },
     "playlists": [
-        {
-            "name": "Synthwave",
-            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdjJWF6mF9nI_buWLF00I7Jh",
-            "last_updated": "7.1.2026 13:40"
-        },
-        {
-            "name": "Музяка",
-            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdhSIqUpoWsFhV1-cPTSeJBx",
-            "last_updated": "7.1.2026 13:40"
-        },
-        {
-            "name": "Дикий басс",
-            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5Adjg45XYMDhQbLQTQ8LVQgmy",
-            "last_updated": "7.1.2026 13:40"
-        },
-        {
-            "name": "Тяжелый фонк",
-            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdhLmcnFlRzFeQqC-OSNZchD",
-            "last_updated": "7.1.2026 14:31"
-        },
-        {
-            "name": "Легкие биты",
-            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdiwyHgW9Qs4rm3MyIn1L9B8",
-            "last_updated": "08.01.2026 00:00"
-        },
-        {
-            "name": "Brazilian funk",
-            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdhiQtljtT6BWu6CMvodvuNQ",
-            "last_updated": "07.01.2026 14:54"
-        },
-        {
-            "name": "Hardstyle",
-            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdiyA7VrMTmKcURlm9bLtfAQ",
-            "last_updated": "07.01.2026 15:20"
-        },
-        {
-            "name": "Легкий фонк",
-            "url": "https://music.youtube.com/playlist?list=PL752Mo0P5AdgYBs7ipz8hjalr86CuZifq",
-            "last_updated": "7.1.2026 14:43"
-        }
+
     ]
 }

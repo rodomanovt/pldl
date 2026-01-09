@@ -2,6 +2,7 @@ import json
 import threading
 import time
 import os
+import sys
 from pldl.model.Playlist import *
 
 
@@ -25,14 +26,14 @@ class Config:
             self._config_path = os.path.join(config_dir, "..", "config.json")
 
             with open(self._config_path, 'r', encoding='utf-8') as f:
-                self._data = json.load(f)
+                self._data = json.load(f) 
 
 
     @classmethod
     def get_instance(cls) -> "Config":
         """Use this to return config instance"""
         return cls()
-    
+
 
     def save(self) -> None:
         """writes config to json file"""
@@ -52,7 +53,11 @@ class Config:
 
 
     def get_music_dir_setting(self) -> str:
-        return self._data["settings"]["music_dir"]
+        dir = self._data["settings"]["music_dir"]
+        if not dir:
+            print("Music library path is not set. Please set the path using the following command: pldl cd /your/library/path")
+            sys.exit(1)
+        return dir
 
 
     def set_update_on_start_setting(self, update_on_start: bool) -> None:
