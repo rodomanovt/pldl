@@ -1,8 +1,10 @@
 # PLDL - PLAYLIST DOWNLOADER    
 
-pldl is a command line tool for managing and automatically downloading playlistst from different music streaming services. 
+**pldl** is a command line tool for managing and automatically downloading playlistst from different music streaming services. 
 
 Credits to [yt-dlp](https://github.com/yt-dlp/yt-dlp).
+
+**Note:** pldl is in alpha, so bugs are expected. Feel free to open an [issue](https://github.com/rodomanovt/pldl/issues/new) and report any problems.
 
 ---
 
@@ -24,7 +26,35 @@ Credits to [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
 # INSTALLATION
 
-`TODO`
+**IMPORTANT: Make sure that you have [ffmpeg](https://www.ffmpeg.org/) installed, or downloading will not work.** You can check if `ffmpeg` is installed correctly by running
+```
+ffmpeg -h
+```
+
+## Installation using `uv` (windows/linux)
+
+1) Make sure that you have [uv](https://docs.astral.sh/uv/) installed. You can check if `uv` is installed correctly by running
+    ```
+    uv --verson
+    ```
+
+2) Clone this repository to any folder by running
+    ```
+    git clone https://github.com/rodomanovt/pldl.git
+    ```
+
+3) Go to the cloned repo folder and run
+    ```
+    uv sync
+    uv tool install .
+    ```
+
+4) On windows: add the path `%USERPROFILE%/.local/bin` to the `Path` environment variable.
+
+5) Check if `pldl` got installed correctly by running
+    ```
+    pldl --version
+    ```
 
 ---
 
@@ -34,7 +64,7 @@ Credits to [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 pldl COMMAND [OPTIONS]
 ```
 
-**Note: all playlists must be publicly visible or they won't be downloaded**
+**IMPORTANT: all playlists must be public or unlisted, otherwise they won't be downloaded.**
 
 ## Commands:
 
