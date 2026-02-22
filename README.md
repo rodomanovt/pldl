@@ -55,6 +55,7 @@ ffmpeg -h
     ```
     pldl --version
     ```
+**Tip: you can automatically update yt-dlp library by running `pldl --update-yt-dlp`**
 
 ---
 

@@ -1,13 +1,13 @@
 [project]
 name = "pldl"
-version = "0.1.0"
+version = "0.2.0"
 description = "Command line tool for downloading youtube music playlists"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "mutagen>=1.47.0",
     "typer>=0.21.0",
-    "yt-dlp>=2025.12.8",
+    "yt-dlp>=2026.2.21",
 ]
 
 [project.scripts]

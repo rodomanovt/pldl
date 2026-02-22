@@ -5,6 +5,9 @@ import typer
 from typing import Optional
 from urllib.parse import urlparse
 import os
+import sys
+import subprocess
+import yt_dlp
 
 
 def validate_url(url: str) -> str:
@@ -29,9 +32,45 @@ def main(
         help="Show the version and exit.",
         is_flag=True,
     ),
+    update_ytdlp: bool = typer.Option(
+        None,
+        "--update-yt-dlp",
+        help="Update yt-dlp library to the latest version.",
+        is_flag=True,
+    ),
 ) -> None:
     if version:
-        typer.echo(f"pldl version {__version__}")
+        typer.echo(f"pldl {__version__}")
+        typer.echo(f"using yt-dlp {yt_dlp.version.__version__}")
+        raise typer.Exit()
+    
+    if update_ytdlp:
+        typer.echo("Updating yt-dlp...")
+        try:
+            # path to python executable
+            python_exec = sys.executable
+            # run python3 -m pip install -U yt-dlp
+            result = subprocess.run(
+                [python_exec, "-m", "pip", "install", "-U", "yt-dlp"],
+                capture_output=True,
+                text=True,
+            )
+            if result.returncode == 0:
+                # get new version
+                try:
+                    # Restart module
+                    import importlib
+                    importlib.reload(yt_dlp)
+                    new_version = yt_dlp.version.__version__
+                except Exception:
+                    new_version = "unknown"
+                typer.secho(f"yt-dlp updated successfully! New version: {new_version}", fg=typer.colors.GREEN)
+            else:
+                typer.secho(f"Failed to update yt-dlp:\n{result.stderr}", fg=typer.colors.RED)
+                raise typer.Exit(1)
+        except FileNotFoundError:
+            typer.secho("Python executable not found", fg=typer.colors.RED)
+            raise typer.Exit(1)
         raise typer.Exit()
 
 
